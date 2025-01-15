@@ -52,7 +52,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: project.jar
-          target: /home/ubuntu/cicd-server/tobe
+          target: /home/ubuntu/welcome-game-server/tobe
 
       - name: SSH(원격 접속)로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.2.0
@@ -63,10 +63,10 @@ jobs:
           script_stop: true
           script: |
             sudo systemctl start mysql || true          
-            rm -rf /home/ubuntu/cicd-server/current
-            mkdir /home/ubuntu/cicd-server/current
-            mv /home/ubuntu/cicd-server/tobe/project.jar /home/ubuntu/cicd-server/current/project.jar
-            cd /home/ubuntu/cicd-server/current
+            rm -rf /home/ubuntu/welcome-game-server/current
+            mkdir /home/ubuntu/welcome-game-server/current
+            mv /home/ubuntu/welcome-game-server/tobe/project.jar /home/ubuntu/welcome-game-server/current/project.jar
+            cd /home/ubuntu/welcome-game-server/current
             sudo fuser -k -n tcp 8080 || true
             nohup java -jar project.jar > ./output.log 2>&1 &
-            rm -rf /home/ubuntu/cicd-server/tobe
+            rm -rf /home/ubuntu/welcome-game-server/tobe

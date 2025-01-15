@@ -29,6 +29,14 @@ jobs:
           mkdir -p src/main/resources
           echo "${{ secrets.APPLICATION_PROPERTIES }}" > src/main/resources/application.yml
 
+      - name: MySQL 설정하기
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          mysql database: 'welcome_game_db'
+          mysql root password: ${{ secrets.MYSQL_PASSWORD }}
+
       - name: 테스트 및 빌드하기
         run: |
           ./gradlew clean build
@@ -54,8 +62,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
-            sudo systemctl start mysql || true
-            mysql -h localhost -u ${{ secrets.MYSQL_USERNAME }} -p${{ secrets.MYSQL_PASSWORD }} -e "SHOW DATABASES;"           
+            sudo systemctl start mysql || true          
             rm -rf /home/ubuntu/cicd-server/current
             mkdir /home/ubuntu/cicd-server/current
             mv /home/ubuntu/cicd-server/tobe/project.jar /home/ubuntu/cicd-server/current/project.jar

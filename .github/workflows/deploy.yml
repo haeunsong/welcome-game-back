@@ -64,6 +64,7 @@ jobs:
           script: |
             sudo apt update
             sudo apt install -y openjdk-17-jdk
+            sudo apt install -y mysql-server
             java -version
             sudo systemctl start mysql || true          
             rm -rf /home/ubuntu/welcome-game-server/current
